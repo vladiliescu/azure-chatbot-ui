@@ -94,8 +94,6 @@ npm i
 Create a .env.local file in the root of the repo with your Azure OpenAI API Key, endpoint and model deployment. See [the docs](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=bash&pivots=rest-api#retrieve-key-and-endpoint) for info on how to retrieve those values.
 
 ```bash
-
-```bash
 OPENAI_AZURE_API_KEY=YOUR_AZURE_OPENAI_KEY
 OPENAI_AZURE_API_HOST="YOUR_ENDPOINT/openai/deployments/YOUR_DEPLOYMENT"
 OPENAI_AZURE_API_VERSION="2023-03-15-preview"
