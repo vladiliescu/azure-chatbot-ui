@@ -1,3 +1,6 @@
+> **Note**
+> This is an Azure OpenAI-focused fork of Chatbot UI. See the [Running locally](#running-locally) section for information on how to set environment variables. It assumes you have access to an Azure OpenAI instance with either a `gpt-35-turbo` or `gpt-4*` deployment available.
+
 # Chatbot UI
 
 Chatbot UI is an advanced chatbot kit for OpenAI's chat models built on top of [Chatbot UI Lite](https://github.com/mckaywrigley/chatbot-ui-lite) using Next.js, TypeScript, and Tailwind CSS.
@@ -77,7 +80,7 @@ docker run -e OPENAI_API_KEY=xxxxxxxx -p 3000:3000 ghcr.io/mckaywrigley/chatbot-
 **1. Clone Repo**
 
 ```bash
-git clone https://github.com/mckaywrigley/chatbot-ui.git
+git clone https://github.com/vladiliescu/azure-chatbot-ui.git
 ```
 
 **2. Install Dependencies**
@@ -88,15 +91,17 @@ npm i
 
 **3. Provide OpenAI API Key**
 
-Create a .env.local file in the root of the repo with your OpenAI API Key:
+Create a .env.local file in the root of the repo with your Azure OpenAI API Key, endpoint and model deployment. See [the docs](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=bash&pivots=rest-api#retrieve-key-and-endpoint) for info on how to retrieve those values.
 
 ```bash
-OPENAI_API_KEY=YOUR_KEY
+
+```bash
+OPENAI_AZURE_API_KEY=YOUR_AZURE_OPENAI_KEY
+OPENAI_AZURE_API_HOST="YOUR_ENDPOINT/openai/deployments/YOUR_DEPLOYMENT"
+OPENAI_AZURE_API_VERSION="2023-03-15-preview"
 ```
 
 > You can set `OPENAI_API_HOST` where access to the official OpenAI host is restricted or unavailable, allowing users to configure an alternative host for their specific needs.
-
-> Additionally, if you have multiple OpenAI Organizations, you can set `OPENAI_ORGANIZATION` to specify one.
 
 **4. Run App**
 
@@ -112,14 +117,16 @@ You should be able to start chatting.
 
 When deploying the application, the following environment variables can be set:
 
-| Environment Variable | Default value   | Description                                             |
-| -------------------- | --------------- | ------------------------------------------------------- |
-| OPENAI_API_KEY       |                 | The default API key used for authentication with OpenAI |
-| DEFAULT_MODEL        | `gpt-3.5-turbo` | The default model to use on new conversations           |
+| Environment Variable     | Default value       | Description                                                             |
+|--------------------------|---------------------|-------------------------------------------------------------------------|
+| OPENAI_AZURE_API_KEY     |                     | The API key used for authentication with your Azure OpenAI deployment   |
+| OPENAI_AZURE_API_HOST    |                     | The host (endpoint + model deployment) for your Azure OpenAI deployment |
+| OPENAI_AZURE_API_VERSION | 2023-03-15-preview  | The API version                                                         |
 
-If you do not provide an OpenAI API key with `OPENAI_API_KEY`, users will have to provide their own key.
+> **Warning**
+> The following functionality is unsupported: If you do not provide an OpenAI API key with `OPENAI_API_KEY`, users will have to provide their own key.
 If you don't have an OpenAI API key, you can get one [here](https://platform.openai.com/account/api-keys).
 
 ## Contact
 
-If you have any questions, feel free to reach out to me on [Twitter](https://twitter.com/mckaywrigley).
+If you have any questions about the Azure OpenAI implementation, feel free to reach out to me on [Twitter](https://twitter.com/vladiliescu) or [Mastodon](https://mastodon.online/@vladiliescu). For questions about the original Chatbot UI, see [here](https://github.com/mckaywrigley/chatbot-ui#contact).
