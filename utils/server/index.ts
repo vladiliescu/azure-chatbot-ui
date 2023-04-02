@@ -5,7 +5,7 @@ import {
   ParsedEvent,
   ReconnectInterval,
 } from 'eventsource-parser';
-import { OPENAI_API_HOST } from '../app/const';
+import {OPENAI_AZURE_API_HOST, OPENAI_AZURE_API_VERSION} from '../app/const';
 
 export class OpenAIError extends Error {
   type: string;
@@ -27,13 +27,10 @@ export const OpenAIStream = async (
   key: string,
   messages: Message[],
 ) => {
-  const res = await fetch(`${OPENAI_API_HOST}/v1/chat/completions`, {
+  const res = await fetch(`${OPENAI_AZURE_API_HOST}/chat/completions?api-version=${OPENAI_AZURE_API_VERSION}`, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${key ? key : process.env.OPENAI_API_KEY}`,
-      ...(process.env.OPENAI_ORGANIZATION && {
-        'OpenAI-Organization': process.env.OPENAI_ORGANIZATION,
-      }),
+      'api-key': `${key ? key : process.env.OPENAI_AZURE_API_KEY}`
     },
     method: 'POST',
     body: JSON.stringify({
@@ -78,13 +75,14 @@ export const OpenAIStream = async (
         if (event.type === 'event') {
           const data = event.data;
 
-          if (data === '[DONE]') {
-            controller.close();
-            return;
-          }
-
           try {
             const json = JSON.parse(data);
+
+            if (json.choices[0].finish_reason === 'stop') {
+              controller.close();
+              return;
+            }
+
             const text = json.choices[0].delta.content;
             const queue = encoder.encode(text);
             controller.enqueue(queue);
